@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+	<meta charset="utf-8" />
+	<title>RSA加密解密</title>
+</head>
+<body>
+
+<p>私钥：<textarea th:text="${n}" id="private" style="width:420px;height:120px;" /></p>
+<p>公钥：<input type="text" id="public" th:value="${e}" /></p>
+<p>请输入要加密的内容： <input type="text" id="raw_content" value="测试内容a"/></p>
+<p><button id="btn" onclick="testEncryptDecrypt()">加密</button></p>
+<p></p>
+<p>服务端返回的内容</p>
+<p id="p_result"></p>
+
+<script type="text/javascript" th:src="@{js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{js/rsa/Barrett.js}"></script>
+<script type="text/javascript" th:src="@{js/rsa/BigInt.js}"></script>
+<script type="text/javascript" th:src="@{js/rsa/RSA.js}"></script>
+
+<script>
+	function testEncryptDecrypt(){
+		var raw_content = $("#raw_content").val();
+		var private = $("#private").text();
+		var public = $("#public").val();
+		setMaxDigits(130); //1024位就是130，2048位就是260.。。。。。。
+		var key1 = new RSAKeyPair(public,"",private);	//从服务端获取到的n和e可以得出公钥
+		var encode_content = encodeURIComponent(raw_content);
+		console.log("encodeURIComponent后的值："+encode_content);
+		var encryptData = encryptedString(key1,encode_content);
+		console.log("客户端公钥加密后的值："+encryptData);
+		var reqUrl = "rsatest";
+		$.ajax({
+			type:"get",
+			dataType:"json",
+			data : {data:encryptData},
+			url:reqUrl,
+			complete:function(data){
+				var jsonData = eval("("+data.responseText+")");
+				var data1 = jsonData.encryptResult;
+				console.log("服务端加密后的值："+data1);
+				var key2 = new RSAKeyPair("", public, private);
+				var data2 = decryptedString(key2, data1);
+				console.log("服务端加密, 客户端解密后的值："+data2);
+				var data3 =  reverse(data2);		//解密后的结果是倒序排列- -
+				console.log("服务端加密, 客户端解密后的值, 再倒序一下："+data3);
+				console.log(data3);
+				var data4 = decodeURIComponent(data3);
+				console.log("最后decodeURIComponent一下："+data4);
+				$("#p_result").text(data4);
+			}
+		});
+	}
+	
+	//倒序返回
+	function reverse(s){
+    	return s.split("").reverse().join("");
+	}
+	
+	
+</script>
+</body>
+</html>
