@@ -20,7 +20,7 @@ public class SpringbootApplication extends SpringBootServletInitializer {
 	
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootApplication.class, args);
-		log.info("【【【【【【定时任务分布式节点 - quartz-cluster-node-first 已启动】】】】】】");
+		log.info("【【【【【【程序--已启动】】】】】】");
 	}
 	
 	@Bean
