@@ -3,13 +3,13 @@ package com.softel.springboot.controller;
 import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.softel.springboot.redis.RedisClient;
+import com.softel.springboot.redis.RedisUtil;
 
 @RestController
 public class RedisController {
 
 	@Resource
-	private RedisClient redisClient;
+	private RedisUtil redisUtil;
 	
 	/**
 	 * set
@@ -17,7 +17,7 @@ public class RedisController {
 	 */
 	@RequestMapping("/set")
     public void set(String key, String value) {
-        redisClient.set(key, value);
+		redisUtil.set(key, value);
     }
 	
 	/**
@@ -26,7 +26,7 @@ public class RedisController {
 	 */
 	@RequestMapping("/del")
     public void update(String key) {
-        redisClient.delete(key);
+		redisUtil.removeValue(key);
     }
 	
 	/**
@@ -35,7 +35,7 @@ public class RedisController {
 	 */
 	@RequestMapping("/expire")
     public void expire(String key) {
-        redisClient.expire(key, 30);
+		redisUtil.expire(key, 30);
     }
 	
 }
