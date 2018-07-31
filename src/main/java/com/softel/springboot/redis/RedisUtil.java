@@ -18,7 +18,7 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class RedisUtil {
 	
-	@Autowired  
+	@Autowired
     private RedisTemplate<Serializable, Serializable> redisTemplate;
 	
 	/**
@@ -27,33 +27,52 @@ public class RedisUtil {
 	 * @param value
 	 * @return
 	 */
-	public boolean set(final String key, final String value) {  
+	public boolean set(final String key, final String value) {
         boolean result = (Boolean)redisTemplate.execute(new RedisCallback<Boolean>() {
-            @Override  
-            public Boolean doInRedis(RedisConnection connection) throws DataAccessException {  
-                RedisSerializer<String> serializer = redisTemplate.getStringSerializer();  
-                connection.set(serializer.serialize(key), serializer.serialize(value));  
-                return true;  
-            }  
+            @Override
+            public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
+                RedisSerializer<String> serializer = redisTemplate.getStringSerializer();
+                connection.set(serializer.serialize(key), serializer.serialize(value));
+                return true;
+            }
         });
-        return result;  
-    }  
+        return result;
+    }
+	
+	/**
+	 * 存值
+	 * @param key
+	 * @param value
+	 * @param expire:过期时间
+	 * @return
+	 */
+	public boolean setEx(final String key, final String value, long expire) {
+        boolean result = (Boolean)redisTemplate.execute(new RedisCallback<Boolean>() {
+            @Override
+            public Boolean doInRedis(RedisConnection connection) throws DataAccessException {  
+                RedisSerializer<String> serializer = redisTemplate.getStringSerializer();
+                connection.setEx(serializer.serialize(key), expire, serializer.serialize(value));
+                return true;
+            }
+        });
+        return result;
+    }
 	
 	/**
 	 * 取值
 	 * @param key
 	 * @return
 	 */
-	public String get(final String key){  
-        String result = (String) redisTemplate.execute(new RedisCallback<String>() {  
-            @Override  
-            public String doInRedis(RedisConnection connection) throws DataAccessException {  
-                RedisSerializer<String> serializer = redisTemplate.getStringSerializer();  
-                byte[] value =  connection.get(serializer.serialize(key));  
-                return serializer.deserialize(value);  
-            }  
-        });  
-        return result;  
+	public String get(final String key){
+        String result = (String) redisTemplate.execute(new RedisCallback<String>() {
+            @Override
+            public String doInRedis(RedisConnection connection) throws DataAccessException {
+                RedisSerializer<String> serializer = redisTemplate.getStringSerializer();
+                byte[] value =  connection.get(serializer.serialize(key));
+                return serializer.deserialize(value);
+            }
+        });
+        return result;
     }
 	
 	/**
