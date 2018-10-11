@@ -26,7 +26,7 @@ public class RedisController {
 	 */
 	@RequestMapping("/del")
     public void update(String key) {
-		redisUtil.removeValue(key);
+		redisUtil.del(key);
     }
 	
 	/**
