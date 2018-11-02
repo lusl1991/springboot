@@ -11,10 +11,12 @@ import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletCon
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableAsync;
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootApplication
 @ServletComponentScan
+@EnableAsync
 @Slf4j
 public class SpringbootApplication extends SpringBootServletInitializer {
 	
