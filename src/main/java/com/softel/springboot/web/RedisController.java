@@ -1,4 +1,4 @@
-package com.softel.springboot.controller;
+package com.softel.springboot.web;
 
 import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,4 +1,4 @@
-package com.softel.springboot.controller;
+package com.softel.springboot.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;

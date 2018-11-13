@@ -16,7 +16,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.softel.springboot.interceptor.LoggerInterceptor;
 
 @Configuration
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
@@ -57,11 +56,6 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         return objectMapper;
     }
 	
-	@Bean
-	public LoggerInterceptor loggerInterceptor(){
-		return new LoggerInterceptor();
-	}
-
 	/**
 	 * 跨域策略
 	 */
@@ -79,15 +73,6 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         converters.add(mappingJackson2HttpMessageConverter());
         super.configureMessageConverters(converters);
     }
-	
-	/**
-	 * 注册拦截器
-	 */
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(loggerInterceptor()).addPathPatterns("/**").excludePathPatterns("/login");
-		super.addInterceptors(registry);
-	}
 	
 	/**
 	 * 注册视图控制器

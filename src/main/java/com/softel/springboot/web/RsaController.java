@@ -1,4 +1,4 @@
-package com.softel.springboot.controller;
+package com.softel.springboot.web;
 
 import java.util.HashMap;
 import java.util.Map;

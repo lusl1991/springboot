@@ -1,10 +1,10 @@
-package com.softel.springboot.controller;
+package com.softel.springboot.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.softel.springboot.model.Email;
+import com.softel.springboot.queue.MailQueue;
 import com.softel.springboot.service.EmailService;
 
 @RestController
@@ -70,6 +70,21 @@ public class EmailController {
 		email.setContent("love小仙女");
 		email.setTemplate("welcome");
         emailService.sendThymeleaf(email);
+    }
+	
+	/**
+	 * quene
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping("/quene")
+    public void quene() throws Exception {
+		Email email = new Email();
+		email.setSubject("64656ytr4644242424");
+		email.setContent("64656ytr4644242424");
+		email.setTemplate("welcome");
+		email.setEmail(new String[]{"lusl1991@163.com","1803145077@qq.com"});
+		MailQueue.getMailQueue().produce(email);
     }
 	
 }

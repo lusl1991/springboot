@@ -26,7 +26,7 @@ public class EmailUtil {
                 try {
                     if (count.get() == 2) {
                         service.shutdown();
-                        logger.info("the task is down");
+                        logger.error("the task is down");
                     }
                     logger.info("start send email and the index is " + count);
                     javaMailSender.send(message);
@@ -34,7 +34,6 @@ public class EmailUtil {
                 }catch (Exception e){
                     logger.error("send email fail" , e);
                 }
-
             }
         });
     }
@@ -58,4 +57,5 @@ public class EmailUtil {
             }
         });
     }
+    
 }

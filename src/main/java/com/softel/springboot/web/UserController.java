@@ -1,4 +1,4 @@
-package com.softel.springboot.controller;
+package com.softel.springboot.web;
 
 import javax.validation.groups.Default;
 import org.quartz.SchedulerException;
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.softel.springboot.repository.UserRepository;
-import com.softel.springboot.annotation.BindingResultAnnotation;
 import com.softel.springboot.base.BaseController;
 import com.softel.springboot.entity.UserEntity;
 import com.softel.springboot.service.UserService;
@@ -86,7 +85,6 @@ public class UserController extends BaseController {
 	 */
 	@ApiOperation(value="添加用户")
 	@RequestMapping(value="/add", method=RequestMethod.GET)
-	@BindingResultAnnotation
     public Result add(@Validated({UserEntityAdd.class, Default.class}) UserEntity userEntity, BindingResult bindingResult) {
 		return ResultUtils.success(userRepository.save(userEntity));
     }
@@ -98,7 +96,6 @@ public class UserController extends BaseController {
 	 */
 	@ApiOperation(value="修改用户")
 	@RequestMapping(value="/update", method=RequestMethod.GET)
-	@BindingResultAnnotation
     public Result update(@Validated({UserEntityUpdate.class, Default.class}) UserEntity userEntity,BindingResult bindingResult) {
         return success(userRepository.save(userEntity));
     }
@@ -109,7 +106,6 @@ public class UserController extends BaseController {
 	 */
 	@ApiOperation(value="删除用户")
 	@RequestMapping(value="/delete", method=RequestMethod.GET)
-	@BindingResultAnnotation
     public Result findbyname(UserEntity userEntity) {
 		userRepository.delete(userEntity);
         return success();

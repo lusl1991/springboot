@@ -1,4 +1,4 @@
-package com.softel.springboot.controller;
+package com.softel.springboot.web;
 
 import java.util.UUID;
 import org.quartz.CronScheduleBuilder;
