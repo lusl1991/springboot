@@ -1,8 +1,6 @@
-package com.softel.springboot.redis;
+package com.softel.springboot.config;
 
 import java.lang.reflect.Method;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -19,13 +17,14 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import com.softel.springboot.redis.RedisProperties;
+import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.JedisPoolConfig;
 
 @Configuration
 @EnableCaching
-public class RedisConfiguration extends CachingConfigurerSupport {
-	
-	private static Logger logger = LoggerFactory.getLogger(RedisConfiguration.class);
+@Slf4j
+public class RedisConfig extends CachingConfigurerSupport {
 	
 	@Autowired
 	private RedisProperties redisProperties;
@@ -52,10 +51,10 @@ public class RedisConfiguration extends CachingConfigurerSupport {
     	try {
     		jedisConnectionFactory.getConnection();
 		} catch (Exception e) {
-			logger.error("redis服务器[{}:{}]连接异常！", redisProperties.getHost(), redisProperties.getPort());
+			log.error("redis服务器[{}:{}]连接异常！", redisProperties.getHost(), redisProperties.getPort());
 			throw new Exception();
 		}
-    	logger.info("redis服务器[{}:{}]连接成功！", redisProperties.getHost(), redisProperties.getPort());
+    	log.info("redis服务器[{}:{}]连接成功！", redisProperties.getHost(), redisProperties.getPort());
     	return jedisConnectionFactory;
     }
     
@@ -91,7 +90,7 @@ public class RedisConfiguration extends CachingConfigurerSupport {
 				for(Object object : params){
 					stringBuffer.append(object.toString());
 				}
-				logger.info("调用redis缓存：key=[{}]", stringBuffer.toString());
+				log.info("调用redis缓存：key=[{}]", stringBuffer.toString());
 				return stringBuffer.toString();
 			}
 		};
@@ -135,22 +134,22 @@ public class RedisConfiguration extends CachingConfigurerSupport {
 	    CacheErrorHandler cacheErrorHandler = new CacheErrorHandler() {
 	        @Override
 	        public void handleCacheGetError(RuntimeException e, Cache cache, Object key) {
-	            logger.error("redis异常：key=[{}]",key,e);
+	        	log.error("redis异常：key=[{}]",key,e);
 	        }
 
 	        @Override
 	        public void handleCachePutError(RuntimeException e, Cache cache, Object key, Object value) {
-	            logger.error("redis异常：key=[{}]",key,e);
+	        	log.error("redis异常：key=[{}]",key,e);
 	        }
 
 	        @Override
 	        public void handleCacheEvictError(RuntimeException e, Cache cache, Object key)    {
-	            logger.error("redis异常：key=[{}]",key,e);
+	        	log.error("redis异常：key=[{}]",key,e);
 	        }
 
 	        @Override
 	        public void handleCacheClearError(RuntimeException e, Cache cache) {
-	            logger.error("redis异常：",e);
+	        	log.error("redis异常：",e);
 	        }
 	    };
 	    return cacheErrorHandler;

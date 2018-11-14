@@ -28,18 +28,19 @@ public class WebLogAspect {
     public void doBefore(JoinPoint joinPoint) throws Throwable {
         // 接收到请求，记录请求内容
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = attributes.getRequest();
-        
-        Map<String, String> headers = RequestUtils.getRequestHeaders(request);
-		Map<String, String> params = RequestUtils.getRequestParams(request);
-		
-		String url = request.getRequestURL().toString();
-		String http_method = request.getMethod();
-		String ip = IPUtil.getIpAddr(request);
-		String class_method = joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName();
-		
-		log.trace("请求地址:{}, 请求方法:{}, 请求头:{}, 请求参数:{}, ip地址:{}, 处理方法: {}", url, http_method, headers, params, ip, class_method);
-
+        if (null != attributes) {
+        	HttpServletRequest request = attributes.getRequest();
+        	
+        	Map<String, String> headers = RequestUtils.getRequestHeaders(request);
+        	Map<String, String> params = RequestUtils.getRequestParams(request);
+        	
+        	String url = request.getRequestURL().toString();
+        	String http_method = request.getMethod();
+        	String ip = IPUtil.getIpAddr(request);
+        	String class_method = joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName();
+        	
+        	log.trace("请求地址:{}, 请求方法:{}, 请求头:{}, 请求参数:{}, ip地址:{}, 处理方法: {}", url, http_method, headers, params, ip, class_method);
+        }
     }
 
     @AfterReturning(returning = "ret", pointcut = "webLog()")

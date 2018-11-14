@@ -3,9 +3,11 @@
 <head>
 	<meta charset="UTF-8" />
     <title>WebScoket广播式</title>
+    <link th:href="@{css/toastr.min.css}" rel="stylesheet"></link>
     <script type="text/javascript" th:src="@{js/sockjs.min.js}"></script>
     <script type="text/javascript" th:src="@{js/stomp.min.js}"></script>
     <script type="text/javascript" th:src="@{js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{js/toastr.min.js}"></script>
 </head>
 <body onload="disconnect()">
     <button id="connect" onclick="connect()">连接</button>
@@ -27,7 +29,7 @@
             }else{
                 $("#inputDiv").show();
             }
-            $("#reponse").html("");
+            $("#response").html("");
         }
         //连接
         function connect()
@@ -59,7 +61,8 @@
         //显示socket返回消息内容
         function showResponse(message)
         {
-            $("#response").html(message);
+            $("#response").append(message).append("<br/>");
+            toastr.info(message);
         }
     </script>
 </body>
