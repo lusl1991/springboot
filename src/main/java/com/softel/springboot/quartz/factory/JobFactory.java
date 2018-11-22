@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JobFactory extends AdaptableJobFactory {
+	
     @Autowired
     private AutowireCapableBeanFactory capableBeanFactory;
 

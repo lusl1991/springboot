@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 import com.softel.springboot.websocket.WiselyResponse;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Component
@@ -21,7 +20,7 @@ public class WelcomeJob implements Job{
     @Override
     public void execute(JobExecutionContext arg0) throws JobExecutionException {
     	log.info("定时任务:" + new Date());
-    	template.convertAndSend("/topic/getResponse", new WiselyResponse("欢迎体验bootdo,这是一个任务计划，使用了websocket和quzrtz技术，可以在计划列表中取消，欢迎您加入qq群交流学习!" ));
+    	template.convertAndSend("/topic/getResponse", new WiselyResponse("这是一个定时任务，每10秒执行一次，可以在计划列表中取消!" ));
     }
 
 }

@@ -6,10 +6,11 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import lombok.Data;
 
-@SuppressWarnings("serial")
 @Data
-public class ScheduleJob implements Serializable ,Job {
+public class ScheduleJob implements Serializable, Job {
 
+	private static final long serialVersionUID = 1L;
+	
 	public static final String STATUS_RUNNING = "1";
 	public static final String STATUS_NOT_RUNNING = "0";
 	public static final String CONCURRENT_IS = "1";

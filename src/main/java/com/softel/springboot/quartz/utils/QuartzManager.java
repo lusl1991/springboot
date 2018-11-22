@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 import com.softel.springboot.domain.ScheduleJob;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 
@@ -31,6 +32,7 @@ import com.softel.springboot.domain.ScheduleJob;
  */
 @Service
 @ComponentScan
+@Slf4j
 public class QuartzManager {
 	
 	@Autowired
@@ -66,6 +68,34 @@ public class QuartzManager {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * 修改任务
+	 * @param job
+	 * @return
+	 */
+    public Boolean updateTask(ScheduleJob job) {
+        String jobName = job.getJobName(),
+                jobGroup = job.getJobGroup(),
+                cronExpression = job.getCronExpression(),
+                jobDescription = job.getDescription();
+        try {
+            if (!checkExists(jobName, jobGroup)) {
+                log.error(String.format("Job不存在, jobName:{%s},jobGroup:{%s}", jobName, jobGroup));
+                return false;
+            }
+            JobKey jobKey = new JobKey(jobName, jobGroup);
+            CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(cronExpression).withMisfireHandlingInstructionDoNothing();
+            CronTrigger cronTrigger = TriggerBuilder.newTrigger().withIdentity(jobName, jobGroup).withSchedule(cronScheduleBuilder).build();
+            JobDetail jobDetail = scheduler.getJobDetail(jobKey);
+            jobDetail.getJobBuilder().withDescription(jobDescription);
+            scheduler.scheduleJob(jobDetail, cronTrigger);
+        } catch (SchedulerException e) {
+            log.error("类名不存在或执行表达式错误");
+            return false;
+        }
+        return true;
+    }
 
 	/**
 	 * 获取所有计划中的任务列表
@@ -169,6 +199,18 @@ public class QuartzManager {
 		JobKey jobKey = JobKey.jobKey(scheduleJob.getJobName(), scheduleJob.getJobGroup());
 		scheduler.triggerJob(jobKey);
 	}
+	
+	/**
+     * 验证是否存在
+     *
+     * @param jobName
+     * @param jobGroup
+     * @throws SchedulerException
+     */
+    public boolean checkExists(String jobName, String jobGroup) throws SchedulerException {
+        TriggerKey triggerKey = TriggerKey.triggerKey(jobName, jobGroup);
+        return scheduler.checkExists(triggerKey);
+    }
 
 	/**
 	 * 更新job时间表达式

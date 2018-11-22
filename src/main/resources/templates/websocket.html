@@ -14,7 +14,10 @@
     <button id="disconnect" onclick="disconnect()" disabled="disabled">断开连接</button><br/>
     <div id="inputDiv">
         输入名称：<input type="text" id="name"/><br/>
-        <button id="sendName" onclick="sendName()">发送</button><br/>
+        <button id="sendName" onclick="sendName()">发送</button>
+        <button id="pauseJob" onclick="pauseJob()">暂停</button>
+        <button id="resumeJob" onclick="resumeJob()">恢复</button>
+        <button id="runAJobNow" onclick="runAJobNow()">立即执行一次</button>
         <p id="response"></p>
     </div>
     <script>
@@ -63,6 +66,42 @@
         {
             $("#response").append(message).append("<br/>");
             toastr.info(message);
+        }
+        
+        function pauseJob() {
+        	$.ajax({
+        		url : "https://localhost:8099/springboot/pauseJob",
+        		data : {jobName:"welcomJob",jobGroup:"group1"},
+        		type : "post",
+        		dataType : "json",
+        		success : function(data){
+        			toastr.info(data.msg);
+        		}
+        	})
+        }
+        
+        function resumeJob() {
+        	$.ajax({
+        		url : "https://localhost:8099/springboot/resumeJob",
+        		data : {jobName:"welcomJob",jobGroup:"group1"},
+        		type : "post",
+        		dataType : "json",
+        		success : function(data){
+        			toastr.info(data.msg);
+        		}
+        	})
+        }
+        
+        function runAJobNow() {
+        	$.ajax({
+        		url : "https://localhost:8099/springboot/runAJobNow",
+        		data : {jobName:"welcomJob",jobGroup:"group1"},
+        		type : "post",
+        		dataType : "json",
+        		success : function(data){
+        			toastr.info(data.msg);
+        		}
+        	})
         }
     </script>
 </body>

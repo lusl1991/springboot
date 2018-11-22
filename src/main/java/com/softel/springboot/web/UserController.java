@@ -3,7 +3,6 @@ package com.softel.springboot.web;
 import javax.validation.groups.Default;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -85,7 +84,7 @@ public class UserController extends BaseController {
 	 */
 	@ApiOperation(value="添加用户")
 	@RequestMapping(value="/add", method=RequestMethod.GET)
-    public Result add(@Validated({UserEntityAdd.class, Default.class}) UserEntity userEntity, BindingResult bindingResult) {
+    public Result add(@Validated({UserEntityAdd.class, Default.class}) UserEntity userEntity) {
 		return ResultUtils.success(userRepository.save(userEntity));
     }
 	
@@ -96,7 +95,7 @@ public class UserController extends BaseController {
 	 */
 	@ApiOperation(value="修改用户")
 	@RequestMapping(value="/update", method=RequestMethod.GET)
-    public Result update(@Validated({UserEntityUpdate.class, Default.class}) UserEntity userEntity,BindingResult bindingResult) {
+    public Result update(@Validated({UserEntityUpdate.class, Default.class}) UserEntity userEntity) {
         return success(userRepository.save(userEntity));
     }
 	

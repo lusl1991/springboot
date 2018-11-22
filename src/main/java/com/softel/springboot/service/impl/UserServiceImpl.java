@@ -15,12 +15,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import com.softel.springboot.entity.UserEntity;
 import com.softel.springboot.repository.UserRepository;
 import com.softel.springboot.service.UserService;
 
 @Service
 @CacheConfig(cacheNames = "user")
+@Transactional
 public class UserServiceImpl implements UserService {
 
 	@Autowired
@@ -60,5 +62,5 @@ public class UserServiceImpl implements UserService {
 		PageRequest pageRequest = new PageRequest(userEntity.getPage() - 1, userEntity.getSize(), sort);
 		return userRepository.findAll(pageRequest);
 	}
-	
+
 }

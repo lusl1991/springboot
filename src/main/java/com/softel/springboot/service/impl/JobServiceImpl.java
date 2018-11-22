@@ -23,7 +23,7 @@ public class JobServiceImpl implements JobService {
 		// 这里获取任务信息数据
 		List<TaskDO> jobList = mock();
 		for (TaskDO scheduleJob : jobList) {
-			if ("0".equals(scheduleJob.getJobStatus())) {
+			if ("1".equals(scheduleJob.getJobStatus())) {
 				ScheduleJob job = ScheduleJobUtils.entityToData(scheduleJob);
 				quartzManager.addJob(job);
 			}

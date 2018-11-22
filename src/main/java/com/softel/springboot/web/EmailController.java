@@ -84,7 +84,9 @@ public class EmailController {
 		email.setContent("64656ytr4644242424");
 		email.setTemplate("welcome");
 		email.setEmail(new String[]{"lusl1991@163.com","1803145077@qq.com"});
-		MailQueue.getMailQueue().produce(email);
+		for(int i=0; i<10000; i++) {
+			MailQueue.getMailQueue().produce(email);
+		}
     }
 	
 }

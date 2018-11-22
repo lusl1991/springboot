@@ -22,6 +22,8 @@ public class ConsumeMailQueue {
 	@Autowired
 	EmailService mailService;
 	
+	public static int total = 0;
+	
 	@PostConstruct
 	public void startThread() {
 		log.info("启动发送邮件线程任务");
@@ -44,7 +46,8 @@ public class ConsumeMailQueue {
 				try {
 					Email mail = MailQueue.getMailQueue().consume();
 					if (mail != null) {
-						log.info("剩余邮件总数:{}",MailQueue.getMailQueue().size());
+						total++;
+						log.info("已发送邮件总数:{},队列剩余邮件总数:{}", total, MailQueue.getMailQueue().size());
 						mailService.sendFreemarker(mail);
 					}
 				} catch (Exception e) {
