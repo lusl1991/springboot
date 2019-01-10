@@ -1,6 +1,7 @@
 package com.softel.springboot.web;
 
 import javax.validation.groups.Default;
+import org.dozer.Mapper;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -16,6 +17,7 @@ import com.softel.springboot.util.Result;
 import com.softel.springboot.util.ResultUtils;
 import com.softel.springboot.validator.add.UserEntityAdd;
 import com.softel.springboot.validator.update.UserEntityUpdate;
+import com.softel.springboot.vo.UserEntityVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -28,6 +30,9 @@ public class UserController extends BaseController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private Mapper mapper;
 	
 	/**
 	 * 查询所有
@@ -60,7 +65,9 @@ public class UserController extends BaseController {
 	@ApiOperation(value="根据id查询用户")
 	@RequestMapping(value="/findone", method=RequestMethod.GET)
     public Result findone(Integer id) {
-        return success(userRepository.findOne(id));
+		UserEntity userEntity = userRepository.findOne(id);
+		UserEntityVo userEntityVo = mapper.map(userEntity, UserEntityVo.class);
+        return success(userEntityVo);
     }
 	
 	/**

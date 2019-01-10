@@ -20,7 +20,7 @@ public class InitScheduleJob implements CommandLineRunner {
 	@Override
 	public void run(String... arg0) throws Exception {
 		try {
-//			jobService.initSchedule();
+			jobService.initSchedule();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
